@@ -63,6 +63,7 @@ function calibrateCaptureArea() {                  //calibration routine
           b=imgData.data[1];                         //blue is the second value of the array [1]
           blue = blue + b;                           //add up all the blue values of each iy
           btx.putImageData(imgData, ix, iy-Y);
+          
         }   //end of iy loop
        
         blue = parseInt(blue/YHEIGHT);             //take average value of blue for this ix
