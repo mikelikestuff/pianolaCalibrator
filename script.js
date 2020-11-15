@@ -1,15 +1,15 @@
 //https://github.com/webrtc/samples/blob/gh-pages/src/content/getusermedia/canvas/js/main.js
 
-
+const WIDTH = 1280;
+const SCALE = WIDTH/640;
 const Y = 305;         //yposition for the Calibration Detect area
 const YHEIGHT = 7;     //height in pixels of Calibration Detact area
 const video = document.querySelector('video');
 const canvas = document.querySelector('canvas');
 const ctx = canvas.getContext('2d');
-var calibrationArray = [0,1,2,3,4,5,6,7,8,9];
-var calibrationNumbers = "";
-//var b = document.getElementById("myCanvas");
-//var btx = b.getContext("2d");
+let calibrationArray = [0,1,2,3,4,5,6,7,8,9];
+let calibrationNumbers = "";
+
 
 window.onload = function () {
    
@@ -17,7 +17,7 @@ window.onload = function () {
     navigator.mediaDevices.getUserMedia({audio: false, video: true})
         .then(function(stream) {
             video.srcObject = stream;
-            canvas.width = 640;
+            canvas.width = WIDTH;
             canvas.height = 480;
             setInterval(interval, 30);
 
@@ -38,7 +38,7 @@ window.onload = function () {
 
 // this is the camera position calibration function
 function calibrateCaptureArea() {                  //calibration routine
-    for (ix = 0; ix < 640; ix++) {                 //ix to scan across the video window    
+    for (ix = 0; ix < WIDTH; ix++) {              //ix to scan across the video window    
         blue = 0
         
         for (iy = Y; iy < Y+YHEIGHT; iy++) {       //for each ix we will measure blue value at several iy
@@ -55,14 +55,14 @@ function calibrateCaptureArea() {                  //calibration routine
     
     //calculate a threshold value to distinguish dark from light
         var threshold = 0;
-    for (ix = 100; ix<499; ix++) {                       //going to calculate a brightness threshold for white and black
+    for (ix = 100 * SCALE; ix<499 * SCALE; ix++) {                       //going to calculate a brightness threshold for white and black
         threshold = threshold + calibrationArray[ix];    //add up lots of values
     }  
-        threshold = parseInt(threshold/400);             //and take the average
-                
+        threshold = parseInt(threshold/SCALE/400);     //and take the average
+          alert (threshold)      
         //going to convert all the blue values to ones or zeros
         //1 represents bright and 0 represents dark
-    for (ix = 0; ix<640; ix++) {
+    for (ix = 0; ix<WIDTH; ix++) {
         if (calibrationArray[ix] >= threshold) 
         {calibrationArray[ix] = 1;}
         else
@@ -72,7 +72,7 @@ function calibrateCaptureArea() {                  //calibration routine
         //this is it: Lets generate some calibration numbers
   var lastfound = 0;            
   var previouslyfound = 0;
-  for (ix = 30; ix<638; ix++) 
+  for (ix = 30 * SCALE ; ix<638 * SCALE; ix++) 
      {      
      var   ixstring = ix.toString();
      var thispixel = calibrationArray[ix];
