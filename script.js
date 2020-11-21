@@ -1,6 +1,6 @@
 //https://github.com/webrtc/samples/blob/gh-pages/src/content/getusermedia/canvas/js/main.js
 
-const WIDTH = 1280;
+const WIDTH = 640;
 const SCALE = WIDTH/640;
 const Y = 305;         //yposition for the Calibration Detect area
 const YHEIGHT = 7;     //height in pixels of Calibration Detact area
@@ -28,7 +28,11 @@ window.onload = function () {
         });
         
     const interval = () => 
-      {ctx.drawImage(video, 0, 0, canvas.width, canvas.height);}
+      {ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+       ctx.beginPath();
+       ctx.moveTo(0, Y-1);
+       ctx.lineTo(WIDTH, Y-1);
+       ctx.stroke();   }
 }  //end of the window.onload function
   
   calibrate.onclick = () => {       // clicking mouse on calibrate button instigates the calibration
@@ -59,7 +63,7 @@ function calibrateCaptureArea() {                  //calibration routine
         threshold = threshold + calibrationArray[ix];    //add up lots of values
     }  
         threshold = parseInt(threshold/SCALE/400);     //and take the average
-          alert (threshold)      
+        //alert (threshold)      
         //going to convert all the blue values to ones or zeros
         //1 represents bright and 0 represents dark
     for (ix = 0; ix<WIDTH; ix++) {
